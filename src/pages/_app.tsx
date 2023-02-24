@@ -3,20 +3,25 @@ import styled from 'styled-components';
 
 import setupMSW from '../api/setup';
 import GlobalStyle from '../styles/GlobalStyle';
+import { QueryClientProvider } from 'react-query';
+import queryClient from '../utilities/queryClient';
 
 setupMSW();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <GlobalStyle />
-      <Background />
-      <Content>
-        <Component {...pageProps} />
-      </Content>
+      <QueryClientProvider client={queryClient}>
+        <GlobalStyle />
+        <Background />
+        <Content>
+          <Component {...pageProps} />
+        </Content>
+      </QueryClientProvider>
     </>
   );
 }
+// getInitialProps() 로그인?? 안써도 되나?
 
 export default MyApp;
 
