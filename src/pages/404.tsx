@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import Header from '../components/Header';
+import React from 'react'
+import styled from 'styled-components'
+import Header from '../components/Header'
 
 function Custom404() {
   return (
@@ -8,11 +8,11 @@ function Custom404() {
       <Header />
       <ErrorMessage>404 - Page Not Found</ErrorMessage>
     </>
-  );
+  )
 }
 
-export default Custom404;
+export default Custom404
 
 const ErrorMessage = styled.h1`
   text-align: center;
-`;
+`
