@@ -11,13 +11,17 @@
 
 <br/>
 
-- 실행
+## 실행
 
-  - `git clone ${URL}`후 디렉토리 최상단에서 `npm install` 합니다.
-  - `npm run dev` 명령어를 실행합니다.
-  - `http://localhost:3000`에서 로컬 웹 페이지를 확인할 수 있습니다.
+- `git clone ${URL}`후 디렉토리 최상단에서 `npm install` 합니다.
+- `npm run dev` 명령어를 실행합니다.
+- `http://localhost:3000`에서 로컬 웹 페이지를 확인할 수 있습니다.
 
-* SSR 관련
+<br/>
+
+## Dev Log
+
+- SSR 관련
 
   - 홈(상품리스트) 페이지(`/` or `/?page=${id}`)와 상품상세 페이지(`/products/${id}`)를 getServerSideProps를 사용하였습니다.
   - 외부 데이터 fetch는 React Query를 사용하였습니다.
