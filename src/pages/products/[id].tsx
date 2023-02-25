@@ -1,21 +1,35 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import type { NextPage } from 'next'
 import styled from 'styled-components'
-import products from '../../api/data/products.json'
 import dynamic from 'next/dynamic'
+import { useGetProductDetail } from '../../service/useProductService'
+import { useRouter } from 'next/router'
 
 const HeaderSection = dynamic(() => import('../../components/Header'), { ssr: false })
 
 const ProductDetailPage: NextPage = () => {
-  const product = products[0]
+  const router = useRouter()
+  const productId = useMemo(() => router.query.id as string, [router.query])
+
+  console.log(productId)
+  const { mutate: getDetailMutate, data } = useGetProductDetail()
+  const { product } = data || {}
+  const { thumbnail, name, price } = product || {}
+
+  useEffect(
+    function onInitProductDetailPage() {
+      if (productId) getDetailMutate({ id: productId })
+    },
+    [productId]
+  )
 
   return (
     <>
       <HeaderSection />
-      <Thumbnail src={product.thumbnail ? product.thumbnail : '/defaultThumbnail.jpg'} />
+      <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
       <ProductInfoWrapper>
-        <Name>{product.name}</Name>
-        <Price>{product.price}원</Price>
+        <Name>{name}</Name>
+        <Price>{price}원</Price>
       </ProductInfoWrapper>
     </>
   )
