@@ -7,11 +7,18 @@ import useValidation from '../utilities/hooks/validation'
 const HeaderSection = dynamic(() => import('../components/Header'))
 
 const LoginPage: NextPage = () => {
-  const [form, setForm] = useState({
+  const [loginForm, setLoginForm] = useState({
     id: '',
     password: '',
   })
-  const { errorText, isValidForm } = useValidation(form)
+  const { errorText, isValidForm } = useValidation(loginForm)
+
+  function onSetLoginForm(key: 'id' | 'password', value: string) {
+    setLoginForm((prev) => ({
+      ...(prev || {}),
+      [key]: value,
+    }))
+  }
 
   return (
     <>
@@ -20,15 +27,15 @@ const LoginPage: NextPage = () => {
         <FormTitle>아이디</FormTitle>
         <TextInput
           type='text'
-          value={form.id}
-          onChange={(e) => setForm({ ...form, id: e.target.value })}
+          value={loginForm.id}
+          onChange={(e) => onSetLoginForm('id', e.target.value)}
         />
         <ErrorText>{errorText.id}</ErrorText>
         <FormTitle>비밀번호</FormTitle>
         <TextInput
           type='password'
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          value={loginForm.password}
+          onChange={(e) => onSetLoginForm('password', e.target.value)}
         />
         <ErrorText>{errorText.password}</ErrorText>
         <LoginButton>로그인</LoginButton>
