@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
@@ -6,6 +7,8 @@ import Header from '../components/Header'
 import Pagination from '../components/Pagination'
 import ProductList from '../components/ProductList'
 import { useGetProductList } from '../service/useGetProductLIst'
+
+const HeaderSection = dynamic(() => import('../components/Header'))
 
 const HomePage: NextPage = () => {
   const router = useRouter()
@@ -31,6 +34,7 @@ const HomePage: NextPage = () => {
   return (
     <>
       <Header />
+      <HeaderSection />
       <Container>
         <ProductList products={products} />
         <Pagination currentPage={pageQuery} totalCount={totalCount} />

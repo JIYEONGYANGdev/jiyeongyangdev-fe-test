@@ -1,11 +1,13 @@
+import dynamic from 'next/dynamic'
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../components/Header'
+
+const HeaderSection = dynamic(() => import('../components/Header'))
 
 function Custom404() {
   return (
     <>
-      <Header />
+      <HeaderSection />
       <ErrorMessage>404 - Page Not Found</ErrorMessage>
     </>
   )
