@@ -1,3 +1,5 @@
+import { commaSplit } from '../utilities/consts'
+
 export const parseQueryString = (search: string): Record<string, string> =>
   (search || '')
     .replace(/^\?/g, '')
@@ -12,7 +14,6 @@ export const parseQueryString = (search: string): Record<string, string> =>
       return acc
     }, {} as Record<string, string>)
 
-const commaSplit = /(?=(?:\d{3})+(?:\.|$))/g
 export const convertedPriceString = (number = 0) => {
   return `${number.toString().split(commaSplit).join(',')}`
 }
