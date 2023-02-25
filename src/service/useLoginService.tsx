@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useQuery, useMutation } from 'react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { GET_USER_INFO, POST_LOGIN } from './keys'
 
 export const usePostLogin = () =>

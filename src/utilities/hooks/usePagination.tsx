@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { range } from 'lodash'
 
 interface PaginationState {
   currentPage: number
@@ -6,18 +7,15 @@ interface PaginationState {
   endPage: number
   nextPages: number
   goToPage: (page: number) => void
-  goToNextPage: () => void
-  goToPreviousPage: () => void
   jumpToNextPages: () => void
   jumpToPrevPages: () => void
-  goToFirstPage: () => void
-  goToLastPage: () => void
 }
 
 export const usePagination = (
-  totalPages: number,
+  totalCount: number,
   initialPage: number = 1,
-  perPage = 5
+  perPage = 5,
+  itemSize = 10
 ): PaginationState => {
   const [currentPage, setCurrentPage] = useState(initialPage)
 
@@ -26,6 +24,7 @@ export const usePagination = (
     startPage = startPage - perPage
   }
 
+  const totalPages = Math.ceil(totalCount / itemSize)
   const nextPages = startPage + perPage
   const endPage = nextPages > totalPages ? totalPages : nextPages
 
@@ -35,21 +34,11 @@ export const usePagination = (
     }
   }
 
-  function goToNextPage() {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  function goToPreviousPage() {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-  }
-
   function jumpToNextPages() {
     if (currentPage + perPage < totalPages) {
       setCurrentPage(currentPage + perPage)
+    } else {
+      setCurrentPage(totalPages)
     }
   }
 
@@ -61,25 +50,13 @@ export const usePagination = (
     }
   }
 
-  function goToFirstPage() {
-    setCurrentPage(1)
-  }
-
-  function goToLastPage() {
-    setCurrentPage(totalPages)
-  }
-
   return {
     currentPage,
     startPage,
     endPage,
     nextPages,
     goToPage,
-    goToNextPage,
-    goToPreviousPage,
     jumpToNextPages,
     jumpToPrevPages,
-    goToFirstPage,
-    goToLastPage,
   }
 }

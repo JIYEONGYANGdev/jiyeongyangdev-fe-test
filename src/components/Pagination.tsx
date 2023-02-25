@@ -1,26 +1,35 @@
-import React, { useMemo } from 'react'
-import styled from 'styled-components'
+import { range } from 'lodash'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo } from 'react'
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc'
+import styled from 'styled-components'
+import { useQueryGetProductList } from '../service/useProductService'
 import { usePagination } from '../utilities/hooks/usePagination'
-import range from 'lodash/range'
-import Router from 'next/router'
 
 interface PaginationProps {
-  currentPage?: number | string
-  totalCount: number
+  onPageClick: (page: number) => void
 }
 
-const Pagination = ({ totalCount }: PaginationProps) => {
+const Pagination = ({ onPageClick }: PaginationProps) => {
+  const router = useRouter()
+  const pageQuery = useMemo(() => (router.query.page as string) || 1, [router.query])
+
+  const { data } = useQueryGetProductList({ page: pageQuery })
+  const { totalCount } = data || {}
+
   const { currentPage, startPage, endPage, nextPages, goToPage, jumpToNextPages, jumpToPrevPages } =
     usePagination(totalCount)
 
   const pagingItems = useMemo(() => range(startPage + 1, endPage + 1), [startPage, endPage])
 
-  const onGoToPage = (page: number) => {
-    // Router.push()
+  function onGoToPage(page: number) {
     goToPage(page)
-    console.log(page)
+    onPageClick(page)
   }
+
+  useEffect(() => {
+    onGoToPage(currentPage)
+  }, [currentPage])
 
   return (
     <PaginationContainer>
@@ -32,7 +41,7 @@ const Pagination = ({ totalCount }: PaginationProps) => {
           <PageButton
             key={page}
             selected={page === currentPage}
-            disabled={page === 1}
+            disabled={page === 0}
             onClick={() => onGoToPage(page)}
           >
             {page}

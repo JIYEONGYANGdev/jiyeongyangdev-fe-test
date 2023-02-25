@@ -1,3 +1,4 @@
+import { dehydrate } from '@tanstack/react-query'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -5,16 +6,19 @@ import { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import Pagination from '../components/Pagination'
 import ProductList from '../components/ProductList'
-import { useGetProductList } from '../service/useProductService'
+import { GET_PRODUCT_LIST } from '../service/keys'
+import {
+  getProductList,
+  useGetProductList,
+  useQueryGetProductList,
+} from '../service/useProductService'
+import queryClient from '../utilities/queryClient'
 
 const HeaderSection = dynamic(() => import('../components/Header'), { ssr: false })
 
 const HomePage: NextPage = () => {
   const router = useRouter()
   const pageQuery = useMemo(() => (router.query.page as string) || 1, [router.query])
-
-  const { mutate: getProductList, data } = useGetProductList()
-  const { products = [], totalCount } = data || {}
 
   function onPageClick(page: number) {
     router.push({
@@ -24,29 +28,16 @@ const HomePage: NextPage = () => {
     })
   }
 
-  useEffect(
-    function onInitProductList() {
-      getProductList(
-        { page: pageQuery, size: 10 },
-        {
-          onSuccess: (res) => {
-            console.log(res)
-          },
-          onError: (error) => {
-            console.log(error)
-          },
-        }
-      )
-    },
-    [pageQuery]
-  )
+  useEffect(function onRedirectToFirstPage() {
+    onPageClick(1)
+  }, [])
 
   return (
     <>
       <HeaderSection />
       <Container>
-        <ProductList products={products} />
-        <Pagination totalCount={totalCount} />
+        <ProductList />
+        <Pagination onPageClick={onPageClick} />
       </Container>
     </>
   )
@@ -60,3 +51,15 @@ const Container = styled.div`
   align-items: center;
   padding: 0 20px 40px;
 `
+
+//@ts-ignore
+export async function getServerSideProps({ req }: GetServerSidePropsContext) {
+  const pageQuery = req.query
+  await queryClient.prefetchQuery([GET_PRODUCT_LIST], () => getProductList({ page: pageQuery }))
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  }
+}
