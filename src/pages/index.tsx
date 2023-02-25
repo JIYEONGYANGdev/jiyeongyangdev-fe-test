@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import Pagination from '../components/Pagination'
 import ProductList from '../components/ProductList'
 import { useGetProductList } from '../service/useGetProductLIst'
-import { useGetUserInfo } from '../service/useLoginService'
 
 const HeaderSection = dynamic(() => import('../components/Header'), { ssr: false })
 

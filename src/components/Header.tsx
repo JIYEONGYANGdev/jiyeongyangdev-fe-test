@@ -34,7 +34,7 @@ function Header() {
   return (
     <HeaderWrapper>
       <Link href='/'>
-        <Title>HAUS</Title>
+        <TitleButton>HAUS</TitleButton>
       </Link>
       <LoginBtnWrapper>
         {isLoggedIn && <div>{userData.name}</div>}
@@ -62,8 +62,9 @@ const LoginBtnWrapper = styled.div`
   flex-direction: column;
 `
 
-const Title = styled.a`
+const TitleButton = styled.button`
   font-size: 48px;
+  cursor: pointer;
 `
 
 const LoginButton = styled.button`
