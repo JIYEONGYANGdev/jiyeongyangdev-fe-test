@@ -39,7 +39,7 @@ const Pagination = ({ onPageClick }: PaginationProps) => {
       <PageWrapper>
         {pagingItems?.map((page) => (
           <PageButton
-            key={page}
+            key={`pagination-button-${page}`}
             selected={page === currentPage}
             disabled={page === 0}
             onClick={() => onGoToPage(page)}

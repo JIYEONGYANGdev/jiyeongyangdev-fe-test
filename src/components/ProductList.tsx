@@ -16,7 +16,7 @@ const ProductList = () => {
   return (
     <Container>
       {products?.map((product: Product) => (
-        <ProductItem key={product.id} product={product} />
+        <ProductItem key={`product-item-${product.id}`} product={product} />
       ))}
     </Container>
   )
