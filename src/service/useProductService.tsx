@@ -33,25 +33,43 @@ export const useGetProductDetail = (params: { id: string }) =>
     const { id } = params
 
     const response = await axios.get(`https://api.sixshop.com/products/${id}`)
+    const { product } = response.data
 
-    return response.data
+    return {
+      product: {
+        ...product,
+        price: convertedPriceString(product.price),
+      },
+    }
   })
 
 export const getProductList = async (params: { page: string; size?: string }) => {
   const { page = 1, size = 10 } = params
 
-  const response = await fetch(`https://api.sixshop.com/products?page=${page}&size=${size}`)
-  const data = await response.json()
-
-  const { products, totalCount } = data.data
+  const response = await axios.get(`https://api.sixshop.com/products?page=${page}&size=${size}`)
+  const { products, totalCount } = response.data.data
 
   return {
-    products: products.map((prdouct: Product) => {
+    products: products.map((product: Product) => {
       return {
-        ...prdouct,
-        price: convertedPriceString(prdouct.price),
+        ...product,
+        price: convertedPriceString(product.price),
       }
     }),
     totalCount,
+  }
+}
+
+export const getProductDetail = async (params: { id: string }) => {
+  const { id } = params
+
+  const response = await axios.get(`https://api.sixshop.com/products/${id}`)
+  const { product } = response.data.data
+
+  return {
+    product: {
+      ...product,
+      price: convertedPriceString(product.price),
+    },
   }
 }

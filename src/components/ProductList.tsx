@@ -6,10 +6,6 @@ import { useQueryGetProductList } from '../service/useProductService'
 import { Product } from '../types/product'
 import ProductItem from './ProductItem'
 
-type ProductListProps = {
-  products: Product[]
-}
-
 const ProductList = () => {
   const router = useRouter()
   const pageQuery = useMemo(() => (router.query.page as string) || 1, [router.query])

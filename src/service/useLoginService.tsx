@@ -10,17 +10,11 @@ export const usePostLogin = () =>
   })
 
 export const useGetUserInfo = (params: { userId: string }) =>
-  useQuery(
-    [GET_USER_INFO, params],
-    async () => {
-      const { userId } = params
+  useQuery([GET_USER_INFO, params], async () => {
+    const { userId } = params
 
-      if (!params.userId) return null
-      const response = await axios.get(`https://api.sixshop.com/users/${userId}`)
+    if (!params.userId) return null
+    const response = await axios.get(`https://api.sixshop.com/users/${userId}`)
 
-      return response.data?.data
-    }
-    // {
-    //   enabled: false,
-    // }
-  )
+    return response.data?.data
+  })

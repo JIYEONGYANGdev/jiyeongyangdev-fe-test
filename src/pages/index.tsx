@@ -2,14 +2,13 @@ import { dehydrate } from '@tanstack/react-query'
 import type { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import Pagination from '../components/Pagination'
 import ProductList from '../components/ProductList'
 import { GET_PRODUCT_LIST } from '../service/keys'
 import { getProductList } from '../service/useProductService'
 import queryClient from '../utilities/queryClient'
-import toNumber from 'lodash/toNumber'
 
 const HeaderSection = dynamic(() => import('../components/Header'), { ssr: false })
 

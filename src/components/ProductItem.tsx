@@ -13,7 +13,7 @@ const ProductItem = ({ product: { id, name, thumbnail, price } }: ProductItemPro
       <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
     </Link>
     <Name>{name}</Name>
-    <Price>{price}</Price>
+    <Price>{price}원</Price>
   </Container>
 )
 
@@ -28,6 +28,7 @@ const Container = styled.a`
 const Thumbnail = styled.img`
   width: 100%;
   height: 180px;
+  cursor: pointer;
 `
 
 const Name = styled.div`
