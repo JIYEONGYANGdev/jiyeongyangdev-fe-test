@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import useValidation from '../utilities/hooks/validation'
 
@@ -12,6 +12,10 @@ const LoginPage: NextPage = () => {
     password: '',
   })
   const { errorText, isValidForm } = useValidation(loginForm)
+  const disabledLogin = useMemo(
+    () => Object.values(isValidForm).some((isValid) => !isValid),
+    [isValidForm]
+  )
 
   function onSetLoginForm(key: 'id' | 'password', value: string) {
     setLoginForm((prev) => ({
@@ -19,6 +23,8 @@ const LoginPage: NextPage = () => {
       [key]: value,
     }))
   }
+
+  function onClickLogin() {}
 
   return (
     <>
@@ -38,7 +44,7 @@ const LoginPage: NextPage = () => {
           onChange={(e) => onSetLoginForm('password', e.target.value)}
         />
         <ErrorText>{errorText.password}</ErrorText>
-        <LoginButton>로그인</LoginButton>
+        <LoginButton disabled={disabledLogin}>로그인</LoginButton>
       </Form>
     </>
   )
@@ -86,3 +92,6 @@ const LoginButton = styled.button`
     background-color: #e2e2ea;
   }
 `
+function useQuery(arg0: any[], arg1: any): { data: any } {
+  throw new Error('Function not implemented.')
+}
