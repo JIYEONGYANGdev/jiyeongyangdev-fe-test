@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc'
-import { usePagination } from '../service/usePagination'
+import { usePagination } from '../utilities/hooks/usePagination'
 import range from 'lodash/range'
 import Router from 'next/router'
 
 interface PaginationProps {
-  currentPage: number | string
+  currentPage?: number | string
   totalCount: number
 }
 

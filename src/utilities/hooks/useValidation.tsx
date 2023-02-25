@@ -11,8 +11,8 @@ export default function useValidation(form: { id: string; password: string }) {
     password: '',
   })
   const [isValidForm, setIsValidForm] = useState({
-    id: false,
-    password: false,
+    id: true,
+    password: true,
   })
 
   function onSetValidForm(key: 'id' | 'password', value: boolean) {
