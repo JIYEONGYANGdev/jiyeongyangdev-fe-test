@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import products from '../../api/data/products.json'
 import dynamic from 'next/dynamic'
 
-const HeaderSection = dynamic(() => import('../components/Header'))
+const HeaderSection = dynamic(() => import('../../components/Header'), { ssr: false })
 
 const ProductDetailPage: NextPage = () => {
   const product = products[0]

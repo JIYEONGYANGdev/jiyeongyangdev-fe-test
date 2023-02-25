@@ -8,7 +8,7 @@ function Custom404() {
   return (
     <>
       <HeaderSection />
-      <ErrorMessage>404 - Page Not Found</ErrorMessage>
+      <ErrorMessage>존재하지 않는 페이지 입니다.</ErrorMessage>
     </>
   )
 }
@@ -16,5 +16,7 @@ function Custom404() {
 export default Custom404
 
 const ErrorMessage = styled.h1`
+  height: 100vh;
+  padding: 50px 0;
   text-align: center;
 `

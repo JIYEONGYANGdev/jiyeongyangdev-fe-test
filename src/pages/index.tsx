@@ -3,12 +3,12 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import Header from '../components/Header'
 import Pagination from '../components/Pagination'
 import ProductList from '../components/ProductList'
 import { useGetProductList } from '../service/useGetProductLIst'
+import { useGetUserInfo } from '../service/useLoginService'
 
-const HeaderSection = dynamic(() => import('../components/Header'))
+const HeaderSection = dynamic(() => import('../components/Header'), { ssr: false })
 
 const HomePage: NextPage = () => {
   const router = useRouter()
@@ -17,27 +17,37 @@ const HomePage: NextPage = () => {
   const { mutate: getProductList, data } = useGetProductList()
   const { products = [], totalCount } = data || {}
 
-  useEffect(function onInitProductList() {
-    getProductList(
-      { page: pageQuery, size: 10 },
-      {
-        onSuccess: (res) => {
-          console.log(res)
-        },
-        onError: (error) => {
-          console.log(error)
-        },
-      }
-    )
-  }, [])
+  function onPageClick(page: number) {
+    router.push({
+      query: {
+        page,
+      },
+    })
+  }
+
+  useEffect(
+    function onInitProductList() {
+      getProductList(
+        { page: pageQuery, size: 10 },
+        {
+          onSuccess: (res) => {
+            console.log(res)
+          },
+          onError: (error) => {
+            console.log(error)
+          },
+        }
+      )
+    },
+    [pageQuery]
+  )
 
   return (
     <>
-      <Header />
       <HeaderSection />
       <Container>
         <ProductList products={products} />
-        <Pagination currentPage={pageQuery} totalCount={totalCount} />
+        <Pagination totalCount={totalCount} />
       </Container>
     </>
   )
