@@ -1,11 +1,11 @@
+import isNil from 'lodash/isNil'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import React, { useMemo, useState } from 'react'
-import styled from 'styled-components'
-import useValidation from '../utilities/hooks/useValidation'
-import { usePostLogin } from '../service/useLoginService'
 import { useRouter } from 'next/router'
-import isNil from 'lodash/isNil'
+import { useMemo, useState } from 'react'
+import styled from 'styled-components'
+import { usePostLogin } from '../service/useLoginService'
+import useValidation from '../utilities/hooks/useValidation'
 
 const HeaderSection = dynamic(() => import('../components/Header'), { ssr: false })
 

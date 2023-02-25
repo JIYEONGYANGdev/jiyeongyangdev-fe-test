@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { useGetUserInfo } from '../service/useLoginService'
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
