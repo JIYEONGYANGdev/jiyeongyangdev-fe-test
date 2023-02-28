@@ -1,24 +1,30 @@
-import type { AppProps } from 'next/app';
-import styled from 'styled-components';
+import type { AppProps } from 'next/app'
+import styled from 'styled-components'
 
-import setupMSW from '../api/setup';
-import GlobalStyle from '../styles/GlobalStyle';
+import setupMSW from '../api/setup'
+import GlobalStyle from '../styles/GlobalStyle'
+import { QueryClientProvider, Hydrate } from '@tanstack/react-query'
+import queryClient from '../utilities/queryClient'
 
-setupMSW();
+setupMSW()
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <GlobalStyle />
-      <Background />
-      <Content>
-        <Component {...pageProps} />
-      </Content>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <GlobalStyle />
+          <Background />
+          <Content>
+            <Component {...pageProps} />
+          </Content>
+        </Hydrate>
+      </QueryClientProvider>
     </>
-  );
+  )
 }
 
-export default MyApp;
+export default MyApp
 
 const Background = styled.div`
   position: fixed;
@@ -26,11 +32,11 @@ const Background = styled.div`
   width: 100%;
   height: 100%;
   background-color: #f0f0f5;
-`;
+`
 
 const Content = styled.div`
   width: 420px;
   min-height: 100%;
   margin: 0 auto;
   background-color: #fff;
-`;
+`

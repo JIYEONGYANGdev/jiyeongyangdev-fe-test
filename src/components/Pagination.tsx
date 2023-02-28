@@ -1,30 +1,63 @@
-import React from 'react';
-import styled from 'styled-components';
-import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
+import { range } from 'lodash'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo } from 'react'
+import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc'
+import styled from 'styled-components'
+import { useQueryGetProductList } from '../service/useProductService'
+import { usePagination } from '../utilities/hooks/usePagination'
 
-const Pagination = () => {
+interface PaginationProps {
+  onPageClick: (page: number) => void
+}
+
+const Pagination = ({ onPageClick }: PaginationProps) => {
+  const router = useRouter()
+  const pageQuery = useMemo(() => (router.query.page as string) || 1, [router.query])
+
+  const { data } = useQueryGetProductList({ page: pageQuery })
+  const { totalCount } = data || {}
+
+  const { currentPage, startPage, endPage, nextPages, goToPage, jumpToNextPages, jumpToPrevPages } =
+    usePagination(totalCount)
+
+  const pagingItems = useMemo(() => range(startPage + 1, endPage + 1), [startPage, endPage])
+
+  function onGoToPage(page: number) {
+    goToPage(page)
+    onPageClick(page)
+  }
+
+  useEffect(() => {
+    onGoToPage(currentPage)
+  }, [currentPage])
+
   return (
-    <Container>
-      <Button disabled>
+    <PaginationContainer>
+      <PageArrowButton disabled={startPage === 0} onClick={jumpToPrevPages}>
         <VscChevronLeft />
-      </Button>
+      </PageArrowButton>
       <PageWrapper>
-        {[1, 2, 3, 4, 5].map((page) => (
-          <Page key={page} selected={page === 1} disabled={page === 1}>
+        {pagingItems?.map((page) => (
+          <PageButton
+            key={`pagination-button-${page}`}
+            selected={page === currentPage}
+            disabled={page === 0}
+            onClick={() => onGoToPage(page)}
+          >
             {page}
-          </Page>
+          </PageButton>
         ))}
       </PageWrapper>
-      <Button disabled={false}>
+      <PageArrowButton disabled={nextPages >= totalCount} onClick={jumpToNextPages}>
         <VscChevronRight />
-      </Button>
-    </Container>
-  );
-};
+      </PageArrowButton>
+    </PaginationContainer>
+  )
+}
 
-export default Pagination;
+export default Pagination
 
-const Container = styled.div`
+const PaginationContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -32,29 +65,32 @@ const Container = styled.div`
   width: 400px;
   margin-top: 40px;
   margin-left: -20px;
-`;
+`
 
-const Button = styled.button`
+const PageArrowButton = styled.button`
+  cursor: pointer;
+
   &:disabled {
     color: #e2e2ea;
     cursor: default;
   }
-`;
+`
 
 const PageWrapper = styled.div`
   display: flex;
   margin: 0 16px;
-`;
+`
 
 type PageType = {
-  selected: boolean;
-};
+  selected: boolean
+}
 
-const Page = styled.button<PageType>`
+const PageButton = styled.button<PageType>`
   padding: 4px 6px;
   background-color: ${({ selected }) => (selected ? '#000' : 'transparent')};
   color: ${({ selected }) => (selected ? '#fff' : '#000')};
   font-size: 20px;
+  cursor: pointer;
 
   & + & {
     margin-left: 4px;
@@ -63,4 +99,4 @@ const Page = styled.button<PageType>`
   &:disabled {
     cursor: default;
   }
-`;
+`
